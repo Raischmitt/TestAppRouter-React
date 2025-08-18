@@ -1,8 +1,8 @@
 function NewEvent() {
     return (
         <>
-            <h1>Home</h1>
-            <p>Qualquer coisa</p>
+            <h1>new event</h1>
+            <p>qualquer coisa</p>
         </>
     );
 }
