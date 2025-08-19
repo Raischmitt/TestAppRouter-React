@@ -1,10 +1,10 @@
-import { useLoaderData } from 'react-router-dom';
+import { useRouteLoaderData } from 'react-router-dom';
 
 import EventItem from '../components/EventItem';
 import { json } from '@remix-run/router';
 
 function EventDetail() {
-    const data = useLoaderData();
+    const data = useRouteLoaderData('event-detail');
 
     return (
         <>
