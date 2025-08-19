@@ -2,7 +2,7 @@
 
 // 1. Add five new (dummy) page components (content can be simple <h1> elements)
 //    - HomePage
-//    - EventsPage
+//    - e
 //    - EventDetailPage
 //    - NewEventPage
 //    - EditEventPage
@@ -24,7 +24,7 @@ import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./page/Home";
 import EditEvent from "./page/EditEvent";
 import Events, { loader as eventsLoader } from "./page/Events";
-import EventDetail from "./page/EventDetail";
+import EventDetail, { loader as eventsDetailLoader } from "./page/EventDetail";
 import NewEvent from "./page/NewEvent";
 import Roots from "./page/Roots";
 import EventsRootLayout from "./page/EventsRoot";
@@ -48,7 +48,7 @@ const router = createBrowserRouter([
           },
           { path: ":eventId/edit", element: <EditEvent /> },
           { path: "new", element: <NewEvent /> },
-          { path: ":eventId", element: <EventDetail /> },
+          { path: ":eventId", element: <EventDetail />, loader: eventsDetailLoader, },
         ],
       },
     ],

@@ -1,10 +1,10 @@
 import MainNavigation from "../components/MainNavigation";
 import PageContent from "../components/PageContent";
 
-import { useRouterError } from 'react-router-dom';
+import { useRouteError } from 'react-router-dom';
 
 function Error() {
-    const error = useRouterError();
+    const error = useRouteError();
 
     let title = "An error accurred!";
     let message = "Something went wrong";

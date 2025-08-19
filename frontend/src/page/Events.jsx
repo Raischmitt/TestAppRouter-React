@@ -1,15 +1,16 @@
-import { useLoaderData, json } from 'react-router-dom';
+import { useLoaderData } from 'react-router-dom';
+import { json } from '@remix-run/router';
 
 import EventsList from '../components/EventsList';
 
-function EventsPage() {
+function Events() {
     const data = useLoaderData();
     const events = data.events;
 
     return <EventsList events={events} />
 }
 
-export default EventsPage;
+export default Events;
 
 export async function loader() {
     const response = await fetch("http://localhost:8080/events");
@@ -22,6 +23,7 @@ export async function loader() {
             }
         );
     } else {
-        return response;
+        const resData = await response.json();
+        return resData;
     }
 }
