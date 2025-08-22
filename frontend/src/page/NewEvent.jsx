@@ -3,14 +3,7 @@ import { redirect } from 'react-router-dom';
 import { json } from '@remix-run/router';
 
 function NewEvent() {
-
-    function submitHandler(event) {
-        event.preventDefaul();
-
-    }
-
-    return <EventForm />
-
+    return <EventForm />;
 }
 
 export default NewEvent;
@@ -32,6 +25,10 @@ export async function action({ request, params }) {
         },
         body: JSON.stringify(eventData),
     });
+
+    if (response.status === 422) {
+        return response;
+    }
 
     if (!response.ok) {
         throw json({ message: 'Could not save event.' }, { status: 500 });
