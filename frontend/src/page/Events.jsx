@@ -1,22 +1,28 @@
-import { useLoaderData } from 'react-router-dom';
-import { json } from '@remix-run/router';
+import { useLoaderData, Await } from 'react-router-dom';
+import { json, defer } from '@remix-run/router';
+import { Suspense } from 'react';
 
 import EventsList from '../components/EventsList';
 
 function Events() {
-    const data = useLoaderData();
-    const events = data.events;
+    const { events } = useLoaderData();
 
-    return <EventsList events={events} />
+    return (
+        <Suspense fallback={<p style={{ textAlign: 'center' }}>Loading...</p>}>
+            <Await resolve={events}>
+                {(loadEvents) => <EventsList events={loadEvents} />}
+            </Await>
+        </Suspense>
+    );
 }
 
 export default Events;
 
-export async function loader() {
+async function loadEvents() {
     const response = await fetch("http://localhost:8080/events");
 
     if (!response.ok) {
-        return json(
+        throw json(
             { message: 'Could not fetch events' },
             {
                 status: 500,
@@ -24,6 +30,12 @@ export async function loader() {
         );
     } else {
         const resData = await response.json();
-        return resData;
+        return resData.events;
     }
+}
+
+export function loader() {
+    return defer({
+        events: loadEvents(),
+    })
 }
