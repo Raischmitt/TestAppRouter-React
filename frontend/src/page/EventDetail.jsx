@@ -1,4 +1,4 @@
-import { useRouteLoaderData } from 'react-router-dom';
+import { redirect, useRouteLoaderData } from 'react-router-dom';
 
 import EventItem from '../components/EventItem';
 import { json } from '@remix-run/router';
@@ -30,4 +30,21 @@ export async function loader({ request, params }) {
     } else {
         return response;
     }
+}
+
+export async function action({ params, request }) {
+    const eventId = params.eventId;
+    const response = await fetch('http://localhost:8080/events/' + eventId, {
+        method: request.method, 
+    });
+
+    if (!response.ok) {
+        throw json({ message: 'could not delet event' },
+            {
+                status: 500,
+            }
+        );
+
+    }
+    return redirect('/events');
 }
