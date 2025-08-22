@@ -1,76 +1,63 @@
-// Challenge / Exercise
-
-// 1. Add five new (dummy) page components (content can be simple <h1> elements)
-//    - HomePage
-//    - e
-//    - EventDetailPage
-//    - NewEventPage
-//    - EditEventPage
-// 2. Add routing & route definitions for these five pages
-//    - / => HomePage
-//    - /events => EventsPage
-//    - /events/<some-id> => EventDetailPage
-//    - /events/new => NewEventPage
-//    - /events/<some-id>/edit => EditEventPage
-// 3. Add a root layout that adds the <MainNavigation> component above all page components
-// 4. Add properly working links to the MainNavigation
-// 5. Ensure that the links in MainNavigation receive an "active" class when active
-// 6. Output a list of dummy events to the EventsPage
-//    Every list item should include a link to the respective EventDetailPage
-// 7. Output the ID of the selected event on the EventDetailPage
-// BONUS: Add another (nested) layout route that adds the <EventNavigation> component above all /events... page components
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 
-import Home from "./page/Home";
-import EditEvent from "./page/EditEvent";
-import Events, { loader as eventsLoader } from "./page/Events";
-import EventDetail, {
-  loader as eventsDetailLoader,
+import EditEventPage from "./page/EditEvent";
+import ErrorPage from "./page/Error";
+import EventDetailPage, {
+  loader as eventDetailLoader,
   action as deleteEventAction,
 } from "./page/EventDetail";
-import NewEvent from "./page/NewEvent";
-import Roots from "./page/Roots";
+import EventsPage, { loader as eventsLoader } from "./page/Events";
 import EventsRootLayout from "./page/EventsRoot";
-import Error from "./page/Error";
-import { action as manipulateEventActio } from "./components/EventForm";
+import HomePage from "./page/Home";
+import NewEventPage from "./page/NewEvent";
+import RootLayout from "./page/Roots";
+import { action as manipulateEventAction } from "./components/EventForm";
+import NewsletterPage, { action as newsletterAction } from "./page/NewLetter";
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Roots />,
-    errorElement: <Error />,
+    element: <RootLayout />,
+    errorElement: <ErrorPage />,
     children: [
-      { index: true, element: <Home /> },
+      { index: true, element: <HomePage /> },
       {
         path: "events",
         element: <EventsRootLayout />,
         children: [
           {
             index: true,
-            element: <Events />,
+            element: <EventsPage />,
             loader: eventsLoader,
           },
           {
             path: ":eventId",
             id: "event-detail",
-            loader: eventsDetailLoader,
+            loader: eventDetailLoader,
             children: [
               {
                 index: true,
-                element: <EventDetail />,
+                element: <EventDetailPage />,
                 action: deleteEventAction,
               },
-
               {
                 path: "edit",
-                element: <EditEvent />,
-                action: manipulateEventActio,
+                element: <EditEventPage />,
+                action: manipulateEventAction,
               },
             ],
           },
-
-          { path: "new", element: <NewEvent />, action: manipulateEventActio },
+          {
+            path: "new",
+            element: <NewEventPage />,
+            action: manipulateEventAction,
+          },
         ],
+      },
+      {
+        path: "newsletter",
+        element: <NewsletterPage />,
+        action: newsletterAction,
       },
     ],
   },
